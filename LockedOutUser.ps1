@@ -1,8 +1,6 @@
 <#	
 	.NOTES
 	===========================================================================
-	 Created on:   	12/13/2018 3:57 PM
-	 Created by:   	Bradley Wyatt
 	 Filename:     	PSPush_LockedOutUsers.ps1
 	===========================================================================
 	.DESCRIPTION
@@ -10,7 +8,7 @@
 #>
 
 #Teams webhook url
-$uri = "[INSERT WEBHOOK URL]"
+$uri = "https://prodaptcloud.webhook.office.com/webhookb2/a64a0719-cd3f-4597-a9e1-9fcbff916fa5@b85de5b8-3fd3-4b20-9328-0d268db1282f/IncomingWebhook/8ddb274a03564e0584961faea4ed51df/8d9e5aa1-b4b3-4de7-aba5-83e5a0f29b5d"
 
 #Image on the left hand side, here I have a regular user picture
 $ItemImage = 'https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png'
@@ -26,7 +24,7 @@ $sMachineName = $sMachineName.TrimEnd("}")
 $sMachineName = $sMachineName.Trim()
 $sMachineName = $sMachineName.TrimStart("\\")
 
-$RecentLockedOutUser = Search-ADAccount -server $DomainContoller -LockedOut | Get-ADUser -Properties badpwdcount, lockoutTime, lockedout, emailaddress | Select-Object badpwdcount, lockedout, Name, EmailAddress, SamAccountName, @{ Name = "LockoutTime"; Expression = { ([datetime]::FromFileTime($_.lockoutTime).ToLocalTime()) } } | Sort-Object LockoutTime -Descending | Select-Object -first 1
+$RecentLockedOutUser = Search-ADAccount -server $ADC1-OMR.prodapt.com -LockedOut | Get-ADUser -Properties badpwdcount, lockoutTime, lockedout, emailaddress | Select-Object badpwdcount, lockedout, Name, EmailAddress, SamAccountName, @{ Name = "LockoutTime"; Expression = { ([datetime]::FromFileTime($_.lockoutTime).ToLocalTime()) } } | Sort-Object LockoutTime -Descending | Select-Object -first 1
 
 $RecentLockedOutUser | ForEach-Object {
 	
